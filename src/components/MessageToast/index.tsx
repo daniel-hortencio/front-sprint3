@@ -19,7 +19,7 @@ const MessageToast: React.FC<MessageToast> = ({ onClick, status, text }) => {
       return <FiCheckCircle size={24} />;
     }
 
-    return;
+    return '';
   };
 
   const getStatusStyle = () => {
@@ -41,7 +41,7 @@ const MessageToast: React.FC<MessageToast> = ({ onClick, status, text }) => {
         <p>{text || ''}</p>
       </div>
 
-      <button onClick={onClick}>
+      <button onClick={onClick} type="button">
         <IoMdClose size={28} />
       </button>
     </div>

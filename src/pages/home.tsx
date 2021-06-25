@@ -20,54 +20,58 @@ const Home: React.FC = () => {
   const { addRequest, removeRequest } = useLoading();
 
   useEffect(() => {
-    addRequest();
+    async function myFunction() {
+      addRequest();
+      await api
+        .getBreadcrumbs()
+        .then((res: NavLinkTypes[]) => {
+          setBreadcrumbs(res);
+        })
+        .catch((err: any) => {
+          console.log(err);
 
-    api
-      .getBreadcrumbs()
-      .then((res: NavLinkTypes[]) => {
-        setBreadcrumbs(res);
-      })
-      .catch((err: any) => {
-        console.log(err);
+          addMessage({
+            status: 'error',
+            text: 'Não foi possível carregar os breadcrumbs',
+          });
+        })
+        .finally(() => removeRequest());
 
-        addMessage({
-          status: 'error',
-          text: 'Não foi possível carregar os breadcrumbs',
-        });
-      })
-      .finally(() => removeRequest());
+      addRequest();
 
-    addRequest();
-    api
-      .getFilters()
-      .then((res: FilterTypes[]) => {
-        setFilters(res);
-      })
-      .catch((err: any) => {
-        console.log(err);
+      await api
+        .getFilters()
+        .then((res: FilterTypes[]) => {
+          setFilters(res);
+        })
+        .catch((err: any) => {
+          console.log(err);
 
-        addMessage({
-          status: 'error',
-          text: 'Não foi possível carregar os filtros',
-        });
-      })
-      .finally(() => removeRequest());
+          addMessage({
+            status: 'error',
+            text: 'Não foi possível carregar os filtros',
+          });
+        })
+        .finally(() => removeRequest());
 
-    addRequest();
-    api
-      .getProducts()
-      .then((res: ProductTypes[]) => {
-        setProducts(res);
-      })
-      .catch((err: any) => {
-        console.log(err);
+      addRequest();
+      await api
+        .getProducts()
+        .then((res: ProductTypes[]) => {
+          setProducts(res);
+        })
+        .catch((err: any) => {
+          console.log(err);
 
-        addMessage({
-          status: 'error',
-          text: 'Não foi possível carregar os produtos',
-        });
-      })
-      .finally(() => removeRequest());
+          addMessage({
+            status: 'error',
+            text: 'Não foi possível carregar os produtos',
+          });
+        })
+        .finally(() => removeRequest());
+    }
+
+    myFunction();
   }, []);
 
   return (
